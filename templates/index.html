@@ -1,0 +1,386 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodVerse | Nutrition Explorer</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --green: #176b4d;
+            --dark: #163c30;
+            --light: #f5f8f4;
+            --muted: #64756c;
+            --border: #e1e9e2;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: var(--light);
+            color: #20372d;
+            line-height: 1.6;
+        }
+
+        header {
+            background: #ffffff;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav {
+            max-width: 1080px;
+            margin: auto;
+            padding: 18px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .brand {
+            font-size: 23px;
+            font-weight: 800;
+            color: var(--dark);
+        }
+
+        .brand span {
+            color: var(--green);
+        }
+
+        .status {
+            font-size: 12px;
+            font-weight: 700;
+            color: #176b4d;
+            background: #e8f5ed;
+            padding: 7px 12px;
+            border-radius: 30px;
+        }
+
+        main {
+            max-width: 900px;
+            margin: 42px auto;
+            padding: 0 20px;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .eyebrow {
+            color: var(--green);
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            color: var(--dark);
+            font-size: clamp(30px, 5vw, 46px);
+            line-height: 1.15;
+            margin: 13px 0;
+        }
+
+        .subtitle {
+            max-width: 580px;
+            margin: auto;
+            color: var(--muted);
+        }
+
+        .panel {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 28px rgba(22, 60, 48, 0.05);
+        }
+
+        h2 {
+            color: var(--dark);
+            font-size: 21px;
+            margin-bottom: 5px;
+        }
+
+        .help {
+            color: var(--muted);
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        input {
+            flex: 1;
+            min-width: 0;
+            padding: 14px 15px;
+            border: 1px solid #cbd9ce;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: var(--green);
+            box-shadow: 0 0 0 3px rgba(23, 107, 77, 0.12);
+        }
+
+        button {
+            border: none;
+            border-radius: 10px;
+            background: var(--green);
+            color: white;
+            padding: 14px 20px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: #10543b;
+        }
+
+        .suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+            margin-top: 18px;
+        }
+
+        .food-chip {
+            background: #f1f7f2;
+            border: 1px solid #dbe9dd;
+            color: #265a42;
+            border-radius: 30px;
+            padding: 7px 13px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .food-chip:hover {
+            background: #e2f0e5;
+        }
+
+        .result-box {
+            background: #f6faf6;
+            border: 1px solid #dbe9dd;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 18px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            line-height: 1.85;
+        }
+
+        .result-label {
+            display: inline-block;
+            color: #176b4d;
+            background: #e5f4e9;
+            font-size: 12px;
+            font-weight: 800;
+            padding: 5px 9px;
+            border-radius: 6px;
+            margin: 10px 0 0;
+        }
+
+        .history-item {
+            padding: 17px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .history-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .food-title {
+            font-weight: 800;
+            color: var(--dark);
+            font-size: 16px;
+        }
+
+        time {
+            color: var(--muted);
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .history-result {
+            color: #56685e;
+            font-size: 13px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            margin-top: 7px;
+            max-height: 110px;
+            overflow: auto;
+        }
+
+        .empty {
+            padding: 20px 0 5px;
+            color: var(--muted);
+            text-align: center;
+        }
+
+        footer {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 20px 30px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        @media (max-width: 600px) {
+            main {
+                margin-top: 28px;
+            }
+
+            .panel {
+                padding: 20px;
+                border-radius: 15px;
+            }
+
+            .nav {
+                padding: 15px;
+            }
+
+            .input-row {
+                flex-direction: column;
+            }
+
+            .input-row button {
+                width: 100%;
+            }
+
+            .history-top {
+                flex-direction: column;
+                gap: 3px;
+            }
+
+            time {
+                white-space: normal;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="nav">
+            <div class="brand">🥗 Food<span>Verse</span></div>
+            <div class="status">OFFLINE DEMO</div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="eyebrow">Your Nutrition Explorer</div>
+            <h1>Discover what's on your plate.</h1>
+            <p class="subtitle">
+                Explore estimated calories, protein, carbohydrates and fat
+                using our food nutrition demo.
+            </p>
+        </section>
+
+        <section class="panel">
+            <h2>Analyze Your Food</h2>
+            <p class="help">
+                Enter a food name to view its estimated nutrition information.
+            </p>
+
+            <form method="POST" action="/">
+                <label for="food_name">Food name</label>
+
+                <div class="input-row">
+                    <input
+                        type="text"
+                        id="food_name"
+                        name="food_name"
+                        placeholder="Try Pizza, Dosa, Apple or Dal..."
+                        value="{{ food_name or '' }}"
+                        required
+                    >
+                    <button type="submit">Analyze Food →</button>
+                </div>
+            </form>
+
+            <div class="suggestions">
+                <button class="food-chip" type="button" onclick="pickFood('Pizza')">🍕 Pizza</button>
+                <button class="food-chip" type="button" onclick="pickFood('Dosa')">🥞 Dosa</button>
+                <button class="food-chip" type="button" onclick="pickFood('Dal')">🍲 Dal</button>
+                <button class="food-chip" type="button" onclick="pickFood('Apple')">🍎 Apple</button>
+                <button class="food-chip" type="button" onclick="pickFood('Rice')">🍚 Rice</button>
+                <button class="food-chip" type="button" onclick="pickFood('Paneer')">🧀 Paneer</button>
+            </div>
+
+            {% if result %}
+                <div style="margin-top: 25px;">
+                    <h2>Analysis Result</h2>
+                    <span class="result-label">Estimated nutrition · Offline demo</span>
+                    <div class="result-box">{{ result }}</div>
+                </div>
+            {% endif %}
+        </section>
+
+        <section class="panel">
+            <h2>Recent History</h2>
+            <p class="help">Your latest food analyses saved by FoodVerse.</p>
+
+            {% if history %}
+                {% for item in history %}
+                    <article class="history-item">
+                        <div class="history-top">
+                            <div class="food-title">🍽️ {{ item[0] }}</div>
+                            <time>{{ item[2] }}</time>
+                        </div>
+                        <div class="history-result">{{ item[1] }}</div>
+                    </article>
+                {% endfor %}
+            {% else %}
+                <div class="empty">
+                    <p>No food history yet.</p>
+                    <p>Analyze your first food to see it here.</p>
+                </div>
+            {% endif %}
+        </section>
+    </main>
+
+    <footer>
+        FoodVerse · Nutrition Explorer · College Project Demo<br>
+        Nutrition values are approximate and vary by recipe and serving size.
+        This demo does not identify food from images or provide medical advice.
+    </footer>
+
+    <script>
+        function pickFood(name) {
+            document.getElementById("food_name").value = name;
+            document.getElementById("food_name").focus();
+        }
+    </script>
+</body>
+</html>
